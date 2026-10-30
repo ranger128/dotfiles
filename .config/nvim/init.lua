@@ -1,0 +1,1 @@
+/Users/ranger/.dotfiles/nvim/init.lua
