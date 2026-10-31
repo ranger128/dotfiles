@@ -14,7 +14,7 @@ dots() {
 }
 
 # [ ALIASES ]
-# alias vz='NVIM_APPNAME=nvim-lazyvim nvim'
-alias vm='NVIM_APPNAME=nvim-minimax nvim'
+alias lazyvim='NVIM_APPNAME=lazyvim vim'
+alias minimax='NVIM_APPNAME=nvim-minimax nvim'
 # alias vo='NVIM_APPNAME=nvim-org nvim'
 alias old-nvim='NVIM_APPNAME=old-nvim nvim'
