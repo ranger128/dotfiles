@@ -1,0 +1,32 @@
+{
+  "plugins": {
+    "gruvbox-material": {
+      "rev": "11d779b26a9ab2b3db8c22c6ac9fb6e8ed4fea79",
+      "src": "https://github.com/sainnhe/gruvbox-material"
+    },
+    "gruvbox.nvim": {
+      "rev": "154eb5ff5b96d0641307113fa385eaf0d36d9796",
+      "src": "https://github.com/ellisonleao/gruvbox.nvim"
+    },
+    "guess-indent.nvim": {
+      "rev": "84a4987ff36798c2fc1169cbaff67960aed9776f",
+      "src": "https://github.com/NMAC427/guess-indent.nvim"
+    },
+    "mini.nvim": {
+      "rev": "a311ed247d527db9592bb434356badc705363746",
+      "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "nvim-treesitter": {
+      "rev": "857651fce37eba032ebe28f3a206283cdc65c45a",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "org.nvim": {
+      "rev": "a37e0b7fe96c321ff7093c96177b8ce4396c9935",
+      "src": "https://github.com/xheisenbugx/org.nvim"
+    },
+    "orgmode": {
+      "rev": "61274cfda2cb5878f5587d4fab0429ec356d4ec8",
+      "src": "https://github.com/nvim-orgmode/orgmode"
+    }
+  }
+}
