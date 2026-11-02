@@ -77,6 +77,12 @@ vim.cmd.colorscheme 'gruvbox-material'
 -- install mini.nvim plugins.
 vim.pack.add { 'nvim-mini/mini.nvim' }
 
+require('mini.misc').setup {}
+
+-- Synchronize terminal emulator background with Neovim's background to remove
+-- possibly different color padding around Neovim instance
+MiniMisc.setup_termbg_sync {}
+
 -- setup the mini.nvim statusline. the thing at the bottom that shows the mode and such
 require('mini.statusline').setup {}
 
@@ -142,8 +148,8 @@ require('orgmode').setup {
   -- you could technically set the descriptions for the maps via .set_mapping_desc, however there is some timing issue i dont want to figure out
   mappings = {
     global = { org_agenda = false, org_capture = false },
-    org = { org_meta_return = { '<Leader>oj', desc = 'Org: new heading/item' } },
-    capture = { org_capture_finalize = { '<Leader>os', desc = 'Capture: save' } },
+    org = { org_meta_return = { '<Leader>oj', desc = 'org meta return' } },
+    capture = { org_capture_finalize = { '<Leader>os', desc = 'org save' } },
   },
   org_agenda_files = '~/org/**/*',
   -- where captures go by default i guess? idk
@@ -163,13 +169,19 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = vim.schedule_wrap(function() MiniClue.ensure_buf_triggers() end),
 })
 
+-- make sure that clue triggers work on the start page
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'MiniStarterOpened',
+  callback = function() MiniClue.ensure_buf_triggers() end,
+})
+
 -- set the keymaps for the org functions
 vim.keymap.set('n', '<Leader>oaa', '<Cmd>Org agenda a<CR>', { desc = 'Agenda (week)' })
 vim.keymap.set('n', '<Leader>oat', '<Cmd>Org agenda t<CR>', { desc = 'Todo list' })
 vim.keymap.set('n', '<Leader>oam', '<Cmd>Org agenda m<CR>', { desc = 'Tags' })
 vim.keymap.set('n', '<Leader>oaM', '<Cmd>Org agenda M<CR>', { desc = 'Tags (todo only)' })
 vim.keymap.set('n', '<Leader>oas', '<Cmd>Org agenda s<CR>', { desc = 'Search' })
-vim.keymap.set('n', '<Leader>oct', '<Cmd>Org capture t<CR>', { desc = 'Capture: task' })
-vim.keymap.set('n', '<Leader>ocn', '<Cmd>Org capture n<CR>', { desc = 'Capture: note' })
-vim.keymap.set('n', '<Leader>ocj', '<Cmd>Org capture j<CR>', { desc = 'Capture: journal' })
-vim.keymap.set('n', '<Leader>oce', '<Cmd>Org capture e<CR>', { desc = 'Capture: event' })
+vim.keymap.set('n', '<Leader>oct', '<Cmd>Org capture t<CR>', { desc = 'Task' })
+vim.keymap.set('n', '<Leader>ocn', '<Cmd>Org capture n<CR>', { desc = 'Note' })
+vim.keymap.set('n', '<Leader>ocj', '<Cmd>Org capture j<CR>', { desc = 'Journal' })
+vim.keymap.set('n', '<Leader>oce', '<Cmd>Org capture e<CR>', { desc = 'Event' })
