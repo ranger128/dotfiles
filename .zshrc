@@ -16,3 +16,5 @@ dots() {
 # [ ALIASES ]
 alias cmini='NVIM_APPNAME=minimax-custom nvim'
 alias ls='eza --color always'
+
+# test
