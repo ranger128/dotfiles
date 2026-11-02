@@ -156,10 +156,11 @@ require('orgmode').setup {
   org_default_notes_file = '~/org/inbox.org',
   -- setup custom capture templates.
   org_capture_templates = {
-    t = { description = 'Task', template = '* TODO %?\n  %u', target = '~/org/tasks.org' },
+    t = { description = 'Task', template = '* TODO %^{Task}\n  %U\n  %?', target = '~/org/tasks.org' },
     n = { description = 'Note', template = '* %?\n  %U', target = '~/org/notes.org' },
     j = { description = 'Journal', template = '* %<%H:%M> %?', target = '~/org/journal.org', datetree = true },
     e = { description = 'Event', template = '* %?\n  %^T', target = '~/org/events.org' },
+    m = { description = 'Meeting', template = '* %^{Title} :meeting:\n  %?', target = '~/org/meetings.org', datetree = true },
   },
 }
 
@@ -185,3 +186,4 @@ vim.keymap.set('n', '<Leader>oct', '<Cmd>Org capture t<CR>', { desc = 'Task' })
 vim.keymap.set('n', '<Leader>ocn', '<Cmd>Org capture n<CR>', { desc = 'Note' })
 vim.keymap.set('n', '<Leader>ocj', '<Cmd>Org capture j<CR>', { desc = 'Journal' })
 vim.keymap.set('n', '<Leader>oce', '<Cmd>Org capture e<CR>', { desc = 'Event' })
+vim.keymap.set('n', '<Leader>ocm', '<Cmd>Org capture m<CR>', { desc = 'Meeting' })
