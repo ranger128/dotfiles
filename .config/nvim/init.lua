@@ -63,6 +63,10 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- kickstart has some diagnostic stuff here but i dont really care right now
 
+-- keymaps for opening frequently used folders fast
+vim.keymap.set('n', '<Leader>eo', '<Cmd>edit ~/org<CR>', { desc = 'Org/' })
+vim.keymap.set('n', '<Leader>ep', '<Cmd>edit ~/projects<CR>', {desc = 'Projects/'})
+
 -- highlight lines when yanking them
 vim.api.nvim_create_autocmd('TextYankPost', { callback = function() vim.hl.on_yank() end })
 
@@ -117,9 +121,10 @@ require('mini.clue').setup {
   window = { delay = 500 },
   clues = {
     -- anything that is just a group should go here. things that is a mapping (ie. it does something) should be in keymaps
-    { mode = 'n', keys = '<Leader>o',  desc = '+org' },
+    { mode = 'n', keys = '<Leader>o',  desc = '+Org' },
     { mode = 'n', keys = '<Leader>oa', desc = '+Agenda' },
     { mode = 'n', keys = '<Leader>oc', desc = '+Capture' },
+    { mode = 'n', keys = '<Leader>e', desc = '+Open'}
   },
   triggers = {
     { mode = { 'n', 'x' }, keys = '<Leader>' },
@@ -160,7 +165,7 @@ require('orgmode').setup {
     n = { description = 'Note', template = '* %?\n  %U', target = '~/org/notes.org' },
     j = { description = 'Journal', template = '* %<%H:%M> %?', target = '~/org/journal.org', datetree = true },
     e = { description = 'Event', template = '* %?\n  %^T', target = '~/org/events.org' },
-    m = { description = 'Meeting', template = '* %^{Title} :meeting:\n  %?', target = '~/org/meetings.org', datetree = true },
+    m = { description = 'Meeting', template = '* %^{Title}\n  %?', target = '~/org/meetings.org', datetree = true },
   },
 }
 
@@ -175,6 +180,9 @@ vim.api.nvim_create_autocmd('User', {
   pattern = 'MiniStarterOpened',
   callback = function() MiniClue.ensure_buf_triggers() end,
 })
+
+-- Experimental LSP support
+vim.lsp.enable('org')
 
 -- set the keymaps for the org functions
 vim.keymap.set('n', '<Leader>oaa', '<Cmd>Org agenda a<CR>', { desc = 'Agenda (week)' })
