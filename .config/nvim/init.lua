@@ -161,11 +161,11 @@ require('orgmode').setup {
   org_default_notes_file = '~/org/inbox.org',
   -- setup custom capture templates.
   org_capture_templates = {
-    t = { description = 'Task', template = '* TODO %^{Task}\n  %U\n  %?', target = '~/org/tasks.org' },
+    t = { description = 'Task', template = '* TODO %^{Task}\n  %U\n  %?', target = '~/org/inbox.org' },
     n = { description = 'Note', template = '* %?\n  %U', target = '~/org/notes.org' },
     j = { description = 'Journal', template = '* %<%H:%M> %?', target = '~/org/journal.org', datetree = true },
-    e = { description = 'Event', template = '* %?\n  %^T', target = '~/org/events.org' },
-    m = { description = 'Meeting', template = '* %^{Title}\n  %?', target = '~/org/meetings.org', datetree = true },
+    e = { description = 'Event', template = '* %?\n  %^T', target = '~/org/inbox.org' },
+    m = { description = 'Meeting', template = '* %^{Title}\n  %?', target = '~/org/notes.org' },
   },
 }
 
