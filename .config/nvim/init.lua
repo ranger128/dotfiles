@@ -184,6 +184,17 @@ vim.api.nvim_create_autocmd('User', {
 -- Experimental LSP support
 vim.lsp.enable('org')
 
+-- set up syncing the org folder to github for my phone to read it
+local dir = vim.fn.expand("~/org")
+local cmd = 'git add -A; git commit -qm "auto: $(date)"; git pull -q --rebase --autostash && git push -q'
+
+local function sync()
+  vim.system({ "sh", "-c", cmd }, { cwd = dir, detach = true })
+end
+
+vim.api.nvim_create_autocmd("VimEnter", { callback = sync })
+vim.api.nvim_create_autocmd("BufWritePost", { pattern = dir .. "/*", callback = sync })
+
 -- set the keymaps for the org functions
 vim.keymap.set('n', '<Leader>oaa', '<Cmd>Org agenda a<CR>', { desc = 'Agenda (week)' })
 vim.keymap.set('n', '<Leader>oat', '<Cmd>Org agenda t<CR>', { desc = 'Todo list' })
