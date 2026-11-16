@@ -206,3 +206,9 @@ vim.keymap.set('n', '<Leader>ocn', '<Cmd>Org capture n<CR>', { desc = 'Note' })
 vim.keymap.set('n', '<Leader>ocj', '<Cmd>Org capture j<CR>', { desc = 'Journal' })
 vim.keymap.set('n', '<Leader>oce', '<Cmd>Org capture e<CR>', { desc = 'Event' })
 vim.keymap.set('n', '<Leader>ocm', '<Cmd>Org capture m<CR>', { desc = 'Meeting' })
+
+-- ┌──────┐
+-- │ Misc │
+-- └──────┘
+
+vim.filetype.add({ extension = { tofu = "terraform" } })
