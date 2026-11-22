@@ -54,32 +54,19 @@ vim.o.cursorline = true
 -- disable modelines. the modeline sets specific options for the file, and can be used as an attack surface. disable it for security
 vim.o.modeline = false
 
--- ┌────────────────────┐
--- │ Keymaps & Autocmds │
--- └────────────────────┘
-
--- clear highlighting from searching by pressing escape
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- kickstart has some diagnostic stuff here but i dont really care right now
-
--- keymaps for opening frequently used folders fast
-vim.keymap.set('n', '<Leader>eo', '<Cmd>edit ~/org<CR>', { desc = 'Org/' })
-vim.keymap.set('n', '<Leader>ep', '<Cmd>edit ~/projects<CR>', {desc = 'Projects/'})
-
--- highlight lines when yanking them
-vim.api.nvim_create_autocmd('TextYankPost', { callback = function() vim.hl.on_yank() end })
-
 -- ┌─────────┐
 -- │ Plugins │
 -- └─────────┘
 
 -- setup colorscheme. gruvbox-material
-vim.pack.add { 'sainnhe/gruvbox-material' }
+vim.pack.add { 'https://github.com/sainnhe/gruvbox-material' }
 vim.cmd.colorscheme 'gruvbox-material'
 
+-- neogit: git ui. diffview adds the side-by-side diff and the merge conflict view
+vim.pack.add { 'https://github.com/NeogitOrg/neogit', 'https://github.com/sindrets/diffview.nvim' }
+
 -- install mini.nvim plugins.
-vim.pack.add { 'nvim-mini/mini.nvim' }
+vim.pack.add { 'https://github.com/nvim-mini/mini.nvim' }
 
 require('mini.misc').setup {}
 
@@ -100,7 +87,7 @@ end
 -- require('mini.icons').setup()
 
 -- install guess indent. this should keep my tabs consistent per file? that way if i want to use shorter ones i can
-vim.pack.add { 'NMAC427/guess-indent.nvim' }
+vim.pack.add { 'https://github.com/NMAC427/guess-indent.nvim' }
 require('guess-indent').setup {}
 
 -- setup the mini.nvim tabline. this is the bar at the top that shows open buffers
@@ -121,9 +108,6 @@ require('mini.clue').setup {
   window = { delay = 500 },
   clues = {
     -- anything that is just a group should go here. things that is a mapping (ie. it does something) should be in keymaps
-    { mode = 'n', keys = '<Leader>o',  desc = '+Org' },
-    { mode = 'n', keys = '<Leader>oa', desc = '+Agenda' },
-    { mode = 'n', keys = '<Leader>oc', desc = '+Capture' },
     { mode = 'n', keys = '<Leader>e', desc = '+Open'}
   },
   triggers = {
@@ -140,40 +124,21 @@ require('mini.jump2d').setup {}
 -- install mini.pairs. this just autocompletes brackets and quotes and such
 require('mini.pairs').setup {}
 
--- ┌──────────┐
--- │ Org mode │
--- └──────────┘
+-- ┌────────────────────┐
+-- │ Keymaps & Autocmds │
+-- └────────────────────┘
 
--- install nvim-orgmode
-vim.pack.add { 'nvim-orgmode/orgmode' }
+-- clear highlighting from searching by pressing escape
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- to be honest, im not totally sure how this works to overwrite the orgmode normal buffer menu for selecting things. i guess overwriting the keymaps for the selections? no
-require('orgmode').setup {
-  -- disable the org agenda and org capture keymaps, so we can set them via clues and give them a cleaner name
-  -- you could technically set the descriptions for the maps via .set_mapping_desc, however there is some timing issue i dont want to figure out
-  mappings = {
-    global = { org_agenda = false, org_capture = false },
-    org = { org_meta_return = { '<Leader>oj', desc = 'org meta return' } },
-    capture = { org_capture_finalize = { '<Leader>os', desc = 'org save' } },
-  },
-  org_agenda_files = '~/org/**/*',
-  -- where captures go by default i guess? idk
-  org_default_notes_file = '~/org/inbox.org',
-  -- setup custom capture templates.
-  org_capture_templates = {
-    t = { description = 'Task', template = '* TODO %^{Task} :task:\n  %U\n  %?', target = '~/org/inbox.org' },
-    n = { description = 'Note', template = '* %? :note:\n  %U', target = '~/org/inbox.org' },
-    j = { description = 'Journal', template = '* %<%H:%M> %?', target = '~/org/journal.org', datetree = true },
-    e = { description = 'Event', template = '* %^{Title} :event:\n  %^T\n  %?', target = '~/org/inbox.org' },
-    m = { description = 'Meeting', template = '* %^{Title} :meeting:\n  %U\n  %?', target = '~/org/inbox.org' },
-  },
-}
+-- kickstart has some diagnostic stuff here but i dont really care right now
 
--- this is some tokenmaxxed command to enable the miniclue menu in the fake buffers for the org agendas
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'org', 'orgagenda' },
-  callback = vim.schedule_wrap(function() MiniClue.ensure_buf_triggers() end),
-})
+-- keymaps for opening frequently used folders fast
+vim.keymap.set('n', '<Leader>eo', '<Cmd>edit ~/org<CR>', { desc = 'Org/' })
+vim.keymap.set('n', '<Leader>ep', '<Cmd>edit ~/projects<CR>', {desc = 'Projects/'})
+
+-- highlight lines when yanking them
+vim.api.nvim_create_autocmd('TextYankPost', { callback = function() vim.hl.on_yank() end })
 
 -- make sure that clue triggers work on the start page
 vim.api.nvim_create_autocmd('User', {
@@ -181,31 +146,15 @@ vim.api.nvim_create_autocmd('User', {
   callback = function() MiniClue.ensure_buf_triggers() end,
 })
 
--- Experimental LSP support
-vim.lsp.enable('org')
+vim.keymap.set('n', '<Leader>g', '<Cmd>Neogit<CR>', { desc = 'Neogit' })
 
--- set up syncing the org folder to github for my phone to read it
-local dir = vim.fn.expand("~/org")
-local cmd = 'git add -A; git commit -qm "auto: $(date)"; git pull -q --rebase --autostash && git push -q'
+-- ┌──────────┐
+-- │ Org mode │
+-- └──────────┘
 
-local function sync()
-  vim.system({ "sh", "-c", cmd }, { cwd = dir, detach = true })
-end
-
-vim.api.nvim_create_autocmd("VimEnter", { callback = sync })
-vim.api.nvim_create_autocmd("BufWritePost", { pattern = dir .. "/*", callback = sync })
-
--- set the keymaps for the org functions
-vim.keymap.set('n', '<Leader>oaa', '<Cmd>Org agenda a<CR>', { desc = 'Agenda (week)' })
-vim.keymap.set('n', '<Leader>oat', '<Cmd>Org agenda t<CR>', { desc = 'Todo list' })
-vim.keymap.set('n', '<Leader>oam', '<Cmd>Org agenda m<CR>', { desc = 'Tags' })
-vim.keymap.set('n', '<Leader>oaM', '<Cmd>Org agenda M<CR>', { desc = 'Tags (todo only)' })
-vim.keymap.set('n', '<Leader>oas', '<Cmd>Org agenda s<CR>', { desc = 'Search' })
-vim.keymap.set('n', '<Leader>oct', '<Cmd>Org capture t<CR>', { desc = 'Task' })
-vim.keymap.set('n', '<Leader>ocn', '<Cmd>Org capture n<CR>', { desc = 'Note' })
-vim.keymap.set('n', '<Leader>ocj', '<Cmd>Org capture j<CR>', { desc = 'Journal' })
-vim.keymap.set('n', '<Leader>oce', '<Cmd>Org capture e<CR>', { desc = 'Event' })
-vim.keymap.set('n', '<Leader>ocm', '<Cmd>Org capture m<CR>', { desc = 'Meeting' })
+-- everything org lives in its own file: lua/ranger/org.lua. orgmode setup, capture templates, org keymaps and the git sync
+-- this has to stay below the mini.clue setup, since it adds its group names to the clue menu
+require('ranger.org')
 
 -- ┌──────┐
 -- │ Misc │
