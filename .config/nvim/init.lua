@@ -161,19 +161,11 @@ require('orgmode').setup {
   org_default_notes_file = '~/org/inbox.org',
   -- setup custom capture templates.
   org_capture_templates = {
-<<<<<<< HEAD
     t = { description = 'Task', template = '* TODO %^{Task} :task:\n  %U\n  %?', target = '~/org/inbox.org' },
     n = { description = 'Note', template = '* %? :note:\n  %U', target = '~/org/inbox.org' },
     j = { description = 'Journal', template = '* %<%H:%M> %?', target = '~/org/journal.org', datetree = true },
     e = { description = 'Event', template = '* %^{Title} :event:\n  %^T\n  %?', target = '~/org/inbox.org' },
     m = { description = 'Meeting', template = '* %^{Title} :meeting:\n  %U\n  %?', target = '~/org/inbox.org' },
-=======
-    t = { description = 'Task', template = '* TODO %^{Task}\n  %U\n  %?', target = '~/org/inbox.org' },
-    n = { description = 'Note', template = '* %?\n  %U', target = '~/org/inbox.org' },
-    j = { description = 'Journal', template = '* %<%H:%M> %?', target = '~/org/journal.org', datetree = true, properties = { empty_lines = { before = 1 } } },
-    e = { description = 'Event', template = '* %?\n  %^T', target = '~/org/inbox.org' },
-    m = { description = 'Meeting', template = '* %^{Title}\n  %?', target = '~/org/inbox.org' },
->>>>>>> 911ef1a (update)
   },
 }
 
